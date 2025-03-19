@@ -1,4 +1,4 @@
-package cofig
+package config
 
 import (
 	"log"
