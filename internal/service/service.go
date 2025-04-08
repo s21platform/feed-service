@@ -26,7 +26,7 @@ func (s *Service) CreateUserPost(ctx context.Context, in *feed.CreateUserPostIn)
 
 	out, err := s.dbR.CreateUserPost(ctx, ownerUUID, in)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create advert: %v", err)
+		return nil, status.Errorf(codes.Internal, "failed to create post: %v", err)
 	}
 
 	return out, nil
