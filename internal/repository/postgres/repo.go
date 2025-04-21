@@ -46,7 +46,7 @@ func (r *Repository) Post(ctx context.Context, uuid string, content string) (str
 	}
 
 	var newUUID string
-	err = r.connection.GetContext(ctx, &newUUID, query, args)
+	err = r.connection.GetContext(ctx, &newUUID, query, args...)
 
 	if err != nil {
 		return "", fmt.Errorf("failed to create post: %v", err)
