@@ -3,10 +3,8 @@ package service
 
 import (
 	"context"
-
-	feed "github.com/s21platform/feed-proto/feed-proto"
 )
 
 type DBRepo interface {
-	CreateUserPost(ctx context.Context, UUID string, in *feed.CreateUserPostIn) (*feed.CreateUserPostOut, error)
+	Post(ctx context.Context, uuid string, content string) (string, error)
 }

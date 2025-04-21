@@ -5,37 +5,42 @@ import (
 	"errors"
 	"testing"
 
-	feedproto "github.com/s21platform/feed-proto/feed-proto"
-	"github.com/s21platform/feed-service/internal/config"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	feedproto "github.com/s21platform/feed-proto/feed-proto"
+
+	"github.com/s21platform/feed-service/internal/config"
 )
 
 func TestServer_CreateUserPosts(t *testing.T) {
 	t.Parallel()
 
+	content := "test-content"
+	userUUID := uuid.New().String()
+	expUUID := uuid.New().String()
+
 	ctx := context.Background()
-	uuid := "test-uuid"
-	ctx = context.WithValue(ctx, config.KeyUUID, uuid)
+	ctx = context.WithValue(ctx, config.KeyUUID, userUUID)
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := NewMockDBRepo(ctrl)
 
 	t.Run("create_ok", func(t *testing.T) {
-		mockRepo.EXPECT().CreateUserPost(ctx, uuid, gomock.Any()).Return(&feedproto.CreateUserPostOut{}, nil)
+		mockRepo.EXPECT().Post(ctx, userUUID, content).Return(expUUID, nil)
 
 		s := New(mockRepo)
-		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{})
+		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
 		assert.NoError(t, err)
 	})
 
 	t.Run("create_no_uuid", func(t *testing.T) {
 		ctx := context.Background()
 
-		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()
 		mockRepo := NewMockDBRepo(ctrl)
 
@@ -51,10 +56,10 @@ func TestServer_CreateUserPosts(t *testing.T) {
 	t.Run("create_err", func(t *testing.T) {
 		expectedErr := errors.New("get err")
 
-		mockRepo.EXPECT().CreateUserPost(ctx, uuid, &feedproto.CreateUserPostIn{}).Return(&feedproto.CreateUserPostOut{}, expectedErr)
+		mockRepo.EXPECT().Post(ctx, userUUID, content).Return("", expectedErr)
 
 		s := New(mockRepo)
-		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{})
+		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
 
 		st, ok := status.FromError(err)
 		assert.True(t, ok)

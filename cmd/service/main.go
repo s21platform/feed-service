@@ -6,13 +6,14 @@ import (
 	"net"
 
 	_ "github.com/lib/pq"
+	"google.golang.org/grpc"
 
 	feed "github.com/s21platform/feed-proto/feed-proto"
+
 	"github.com/s21platform/feed-service/internal/config"
 	"github.com/s21platform/feed-service/internal/infra"
-	db "github.com/s21platform/feed-service/internal/repository/postgres"
 	"github.com/s21platform/feed-service/internal/service"
-	"google.golang.org/grpc"
+	db "github.com/s21platform/feed-service/internal/repository/postgres"
 )
 
 func main() {
@@ -30,11 +31,11 @@ func main() {
 
 	feed.RegisterFeedServiceServer(server, feedService)
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Service.Port))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", cfg.Service.Port))
 	if err != nil {
-		log.Fatalf("cannot listen port: %s; Error: %v", cfg.Service.Port, err)
+		log.Fatalf("failed to start TCP listener: %v", err)
 	}
-	if err = server.Serve(lis); err != nil {
-		log.Fatalf("cannot start grpc, port: %s; Error: %v", cfg.Service.Port, err)
+	if err = server.Serve(listener); err != nil {
+		log.Fatalf("failed to start gRPC listener: %v", err)
 	}
 }
