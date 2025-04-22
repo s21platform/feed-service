@@ -33,7 +33,7 @@ func (r *Repository) Close() {
 	_ = r.connection.Close()
 }
 
-func (r *Repository) Post(ctx context.Context, uuid string, content string) (string, error) {
+func (r *Repository) Post(ctx context.Context, uuid , content string) (string, error) {
 	query, args, err := squirrel.Insert("user_posts").
 		Columns("owner_uuid", "content").
 		Values(uuid, content).
@@ -45,12 +45,12 @@ func (r *Repository) Post(ctx context.Context, uuid string, content string) (str
 		return "", fmt.Errorf("failed to build insert query: %v", err)
 	}
 
-	var newUUID string
-	err = r.connection.GetContext(ctx, &newUUID, query, args...)
+	var newPostUUID string
+	err = r.connection.GetContext(ctx, &newPostUUID, query, args...)
 
 	if err != nil {
 		return "", fmt.Errorf("failed to create post: %v", err)
 	}
 
-	return newUUID, nil
+	return newPostUUID, nil
 }

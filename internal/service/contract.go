@@ -6,5 +6,5 @@ import (
 )
 
 type DBRepo interface {
-	Post(ctx context.Context, uuid string, content string) (string, error)
+	Post(ctx context.Context, uuid , content string) (string, error)
 }

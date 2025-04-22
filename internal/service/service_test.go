@@ -29,22 +29,19 @@ func TestServer_CreateUserPosts(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockRepo := NewMockDBRepo(ctrl)
+	s := New(mockRepo)
 
 	t.Run("create_ok", func(t *testing.T) {
 		mockRepo.EXPECT().Post(ctx, userUUID, content).Return(expUUID, nil)
 
-		s := New(mockRepo)
 		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
+
 		assert.NoError(t, err)
 	})
 
 	t.Run("create_no_uuid", func(t *testing.T) {
 		ctx := context.Background()
 
-		defer ctrl.Finish()
-		mockRepo := NewMockDBRepo(ctrl)
-
-		s := New(mockRepo)
 		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{})
 
 		st, ok := status.FromError(err)
@@ -58,7 +55,6 @@ func TestServer_CreateUserPosts(t *testing.T) {
 
 		mockRepo.EXPECT().Post(ctx, userUUID, content).Return("", expectedErr)
 
-		s := New(mockRepo)
 		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
 
 		st, ok := status.FromError(err)
