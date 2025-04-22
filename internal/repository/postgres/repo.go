@@ -33,7 +33,7 @@ func (r *Repository) Close() {
 	_ = r.connection.Close()
 }
 
-func (r *Repository) Post(ctx context.Context, uuid , content string) (string, error) {
+func (r *Repository) Post(ctx context.Context, uuid, content string) (string, error) {
 	query, args, err := squirrel.Insert("user_posts").
 		Columns("owner_uuid", "content").
 		Values(uuid, content).
