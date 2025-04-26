@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS entities_suggestion
 );
 
 -- +goose Down
-DROP TABLE IF EXISTS user_post_views;
+DROP TABLE IF EXISTS entities_suggestion;
 DROP EXTENSION IF EXISTS pgcrypto;

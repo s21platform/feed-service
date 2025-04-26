@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS entities
 );
 
 -- +goose Down
-DROP TABLE IF EXISTS user_posts;
+DROP TABLE IF EXISTS entities;
 DROP EXTENSION IF EXISTS pgcrypto;
