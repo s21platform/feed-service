@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Service  Service
 	Postgres Postgres
+	Kafka    Kafka
 	Metrics  Metrics
 	Platform Platform
 }
@@ -24,6 +25,12 @@ type Postgres struct {
 	Database string `env:"FEED_SERVICE_POSTGRES_DB"`
 	Host     string `env:"FEED_SERVICE_POSTGRES_HOST"`
 	Port     string `env:"FEED_SERVICE_POSTGRES_PORT"`
+}
+
+type Kafka struct {
+	Host      string `env:"KAFKA_HOST"`
+	Port      string `env:"KAFKA_PORT"`
+	UserTopic string `env:"USER_CREATE_NEW_POST"`
 }
 
 type Metrics struct {
