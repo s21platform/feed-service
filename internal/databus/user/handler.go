@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/s21platform/feed-service/internal/config"
-	"github.com/s21platform/feed-service/internal/model"
 	"github.com/s21platform/metrics-lib/pkg"
 	"golang.org/x/net/context"
+	
+	"github.com/s21platform/feed-service/internal/config"
+	"github.com/s21platform/feed-service/internal/model"
 )
 
 type Handler struct {
