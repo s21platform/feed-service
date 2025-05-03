@@ -26,6 +26,7 @@ func convertMessage(bMessage []byte, targer interface{}) error {
 	return nil
 }
 
+// TO DO: функцию получения подписчиков пользователя
 func (h *Handler) Handler(ctx context.Context, in []byte) error {
 	m := pkg.FromContext(ctx, config.KeyMetrics)
 	var msg model.CreateUserPostMessage
@@ -41,7 +42,7 @@ func (h *Handler) Handler(ctx context.Context, in []byte) error {
 
 	log.Printf("Parsed message: UserUUID=%s, PostUUID=%s", msg.UserUUID, msg.PostUUID)
 
-	err = h.dbR.CreateUserPost(ctx, msg.PostUUID)
+	err = h.dbR.CreatePost(ctx, msg.PostUUID, "user")
 	if err != nil {
 		m.Increment("create_user_post.error")
 		log.Printf("failed to create post: %v", err)

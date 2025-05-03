@@ -3,5 +3,5 @@ package user
 import "context"
 
 type DBRepo interface {
-	CreateUserPost(ctx context.Context, postUUID string) error
+	CreatePost(ctx context.Context, postUUID, metadata string) error
 }

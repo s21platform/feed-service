@@ -55,10 +55,10 @@ func (r *Repository) Post(ctx context.Context, uuid, content string) (string, er
 	return newPostUUID, nil
 }
 
-func (r *Repository) CreateUserPost(ctx context.Context, postUUID string) error {
+func (r *Repository) CreatePost(ctx context.Context, postUUID, metadata string) error {
 	query, args, err := squirrel.Insert("entities").
 		Columns("external_uuid", "metadata").
-		Values(postUUID, "user").
+		Values(postUUID, metadata).
 		PlaceholderFormat(squirrel.Dollar).
 		ToSql()
 
