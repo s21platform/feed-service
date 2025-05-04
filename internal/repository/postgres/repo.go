@@ -54,3 +54,22 @@ func (r *Repository) Post(ctx context.Context, uuid, content string) (string, er
 
 	return newPostUUID, nil
 }
+
+func (r *Repository) SaveNewEntity(ctx context.Context, UUID, metadata string) error {
+	query, args, err := squirrel.Insert("entities").
+		Columns("external_uuid", "metadata").
+		Values(UUID, metadata).
+		PlaceholderFormat(squirrel.Dollar).
+		ToSql()
+
+	if err != nil {
+		return fmt.Errorf("failed to build insert query: %v", err)
+	}
+
+	_, err = r.connection.ExecContext(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to create user post in db: %v", err)
+	}
+	
+	return nil
+}
