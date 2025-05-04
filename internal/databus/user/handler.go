@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/s21platform/metrics-lib/pkg"
 	"golang.org/x/net/context"
-	
+
+	"github.com/s21platform/metrics-lib/pkg"
+
 	"github.com/s21platform/feed-service/internal/config"
 	"github.com/s21platform/feed-service/internal/model"
 )
@@ -27,31 +28,27 @@ func convertMessage(bMessage []byte, targer interface{}) error {
 	return nil
 }
 
-// TO DO: функцию получения подписчиков пользователя
 func (h *Handler) Handler(ctx context.Context, in []byte) error {
 	m := pkg.FromContext(ctx, config.KeyMetrics)
-	var msg model.CreateUserPostMessage
-
-	log.Printf("Received message: %s", string(in))
-
+	var msg model.NewEntityMessage
+	
 	err := convertMessage(in, &msg)
 	if err != nil {
-		m.Increment("create_user_post.error")
+		m.Increment("save_user_post.error")
 		log.Printf("failed to convert message: %v", err)
 		return err
 	}
+	
+	// TODO: функцию получения подписчиков пользователя
 
-	log.Printf("Parsed message: UserUUID=%s, PostUUID=%s", msg.UserUUID, msg.PostUUID)
-
-	err = h.dbR.CreatePost(ctx, msg.PostUUID, "user")
+	err = h.dbR.SaveNewEntity(ctx, msg.EntityUUID, model.User)
 	if err != nil {
-		m.Increment("create_user_post.error")
+		m.Increment("save_user_post.error")
 		log.Printf("failed to create post: %v", err)
 		return err
 	}
 
-	log.Printf("Successfully created post for user %s", msg.UserUUID)
-	m.Increment("create_user_post.success")
+	m.Increment("save_user_post.success")
 
 	return nil
 }

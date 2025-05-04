@@ -3,5 +3,5 @@ package user
 import "context"
 
 type DBRepo interface {
-	CreatePost(ctx context.Context, postUUID, metadata string) error
+	SaveNewEntity(ctx context.Context, UUID, metadata string) error
 }

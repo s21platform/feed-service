@@ -6,11 +6,13 @@ import (
 
 	kafkalib "github.com/s21platform/kafka-lib"
 	"github.com/s21platform/metrics-lib/pkg"
-	
+
 	"github.com/s21platform/feed-service/internal/config"
 	"github.com/s21platform/feed-service/internal/databus/user"
 	"github.com/s21platform/feed-service/internal/repository/postgres"
 )
+
+const userPostConsumerGroupID = "new-post-creater"
 
 func main() {
 	cfg := config.MustLoad()
@@ -29,7 +31,7 @@ func main() {
 		cfg.Kafka.Host,
 		cfg.Kafka.Port,
 		cfg.Kafka.UserTopic,
-		"new-post-creater",
+		userPostConsumerGroupID,
 	)
 
 	userConsumer, err := kafkalib.NewConsumer(userConsumerConfig, metrics)
@@ -39,8 +41,6 @@ func main() {
 
 	userHandler := user.New(dbRepo)
 	userConsumer.RegisterHandler(ctx, userHandler.Handler)
-
-	log.Println("Post consumer started successfully!")
 
 	<-ctx.Done()
 }
