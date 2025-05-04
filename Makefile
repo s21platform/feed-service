@@ -8,3 +8,9 @@ lint: $(GOLANGCI_LINT)
 $(GOLANGCI_LINT):
 	@echo "golangci-lint not found, installing the latest version..."
 	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GOLANGCI_LINT_INSTALL_DIR)
+
+.PHONY: protogen
+
+protogen:
+	protoc --go_out=. --go-grpc_out=. ./api/feed.proto
+	protoc --doc_out=. --doc_opt=markdown,GRPC_API.md ./api/feed.proto

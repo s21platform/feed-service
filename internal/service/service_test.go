@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	feedproto "github.com/s21platform/feed-proto/feed-proto"
+	feedproto "github.com/s21platform/feed-service/pkg/feed"
 
 	"github.com/s21platform/feed-service/internal/config"
 )
