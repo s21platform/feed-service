@@ -6,9 +6,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	feed "github.com/s21platform/feed-proto/feed-proto"
-
 	"github.com/s21platform/feed-service/internal/config"
+	"github.com/s21platform/feed-service/pkg/feed"
 )
 
 type Service struct {

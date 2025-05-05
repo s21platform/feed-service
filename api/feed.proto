@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "pkg/feed";
+
+service FeedService {
+    rpc CreateUserPost(CreateUserPostIn) returns (CreateUserPostOut){};
+}
+
+message CreateUserPostIn {
+    string content = 1;
+}
+
+message CreateUserPostOut {
+    string post_uuid = 1;
+}
