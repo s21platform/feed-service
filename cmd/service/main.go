@@ -8,12 +8,11 @@ import (
 	_ "github.com/lib/pq"
 	"google.golang.org/grpc"
 
-	feed "github.com/s21platform/feed-service/pkg/feed"
-
 	"github.com/s21platform/feed-service/internal/config"
 	"github.com/s21platform/feed-service/internal/infra"
 	db "github.com/s21platform/feed-service/internal/repository/postgres"
 	"github.com/s21platform/feed-service/internal/service"
+	"github.com/s21platform/feed-service/pkg/feed"
 )
 
 func main() {

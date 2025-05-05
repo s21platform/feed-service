@@ -11,9 +11,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	feedproto "github.com/s21platform/feed-service/pkg/feed"
-
 	"github.com/s21platform/feed-service/internal/config"
+	"github.com/s21platform/feed-service/pkg/feed"
 )
 
 func TestServer_CreateUserPosts(t *testing.T) {
@@ -34,7 +33,7 @@ func TestServer_CreateUserPosts(t *testing.T) {
 	t.Run("create_ok", func(t *testing.T) {
 		mockRepo.EXPECT().Post(ctx, userUUID, content).Return(expUUID, nil)
 
-		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
+		_, err := s.CreateUserPost(ctx, &feed.CreateUserPostIn{Content: content})
 
 		assert.NoError(t, err)
 	})
@@ -42,7 +41,7 @@ func TestServer_CreateUserPosts(t *testing.T) {
 	t.Run("create_no_uuid", func(t *testing.T) {
 		ctx := context.Background()
 
-		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{})
+		_, err := s.CreateUserPost(ctx, &feed.CreateUserPostIn{})
 
 		st, ok := status.FromError(err)
 		assert.True(t, ok)
@@ -55,7 +54,7 @@ func TestServer_CreateUserPosts(t *testing.T) {
 
 		mockRepo.EXPECT().Post(ctx, userUUID, content).Return("", expectedErr)
 
-		_, err := s.CreateUserPost(ctx, &feedproto.CreateUserPostIn{Content: content})
+		_, err := s.CreateUserPost(ctx, &feed.CreateUserPostIn{Content: content})
 
 		st, ok := status.FromError(err)
 		assert.True(t, ok)
