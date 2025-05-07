@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: feed
+  description: Сервис постов
+  annotations:
+    github.com/project-slug: s21platform/feed-service
+  tags:
+    - grpc
+    - postgres
+    - kafka
+  # links:
+  #   - url: добавить ссылку на наш срвис
+  #     title: Grafana
+  #     icon: dashboard
+spec:
+  type: service
+  lifecycle: production
+  owner: feed-service-team
+  providesApis:
+    - feed-api
