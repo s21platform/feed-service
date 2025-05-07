@@ -25,7 +25,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: CreateUserPost-v0
+  name: CreateUserPost
   description: получение uuid нового поста
   annotations:
     github.com/project-slug: s21platform/feed-service
