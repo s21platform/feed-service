@@ -10,7 +10,7 @@ metadata:
     - postgres
     - kafka
   # links:
-  #   - url: добавить ссылку на наш срвис
+  #   - url: добавить ссылку на наш сервис
   #     title: Grafana
   #     icon: dashboard
 spec:
@@ -18,7 +18,7 @@ spec:
   lifecycle: production
   owner: feed-service-team
   providesApis:
-    - feed-api
+    - CreateUserPost
 
 ---
 
