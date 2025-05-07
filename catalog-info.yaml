@@ -1,0 +1,47 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: feed
+  description: Сервис постов
+  annotations:
+    github.com/project-slug: s21platform/feed-service
+  tags:
+    - grpc
+    - postgres
+    - kafka
+  # links:
+  #   - url: добавить ссылку на наш сервис
+  #     title: Grafana
+  #     icon: dashboard
+spec:
+  type: service
+  lifecycle: production
+  owner: feed-service-team
+  providesApis:
+    - CreateUserPost
+
+---
+
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: CreateUserPost
+  description: получение uuid нового поста
+  annotations:
+    github.com/project-slug: s21platform/feed-service
+  tags:
+    - proto
+spec:
+  type: grpc
+  lifecycle: production
+  owner: feed-service-team
+  definition: |
+    rpc CreateUserPost(CreateUserPostIn) returns (CreateUserPostOut){};
+    
+    message CreateUserPostIn {
+      string content = 1;
+    }
+      
+    message CreateUserPostOut {
+      string post_uuid = 1;
+    }
