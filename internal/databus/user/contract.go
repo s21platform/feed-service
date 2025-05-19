@@ -7,6 +7,10 @@ import (
 )
 
 type DBRepo interface {
-	SaveNewEntity(ctx context.Context, UUID, metadata string) error
-	SaveNewEntitySuggestion(ctx context.Context, followers []*user.Peer) error
+	SaveNewEntity(ctx context.Context, UUID, metadata string) (string, error)
+	SaveNewEntitySuggestion(ctx context.Context, postUUID, followerUUID string) error
+}
+
+type UserClient interface {
+	GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*user.Peer, error)
 }
