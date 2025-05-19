@@ -9,6 +9,7 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	"github.com/s21platform/feed-service/internal/config"
+	"github.com/s21platform/user-service/pkg/user"
 )
 
 type Repository struct {
@@ -71,5 +72,25 @@ func (r *Repository) SaveNewEntity(ctx context.Context, UUID, metadata string) e
 		return fmt.Errorf("failed to create user post in db: %v", err)
 	}
 	
+	return nil
+}
+
+func (r *Repository) SaveNewEntitySuggestion(ctx context.Context, followers []*user.Peer) error {
+	for _, follower := range followers {
+		query, args, err := squirrel.Insert("entities_suggestion").
+		Columns("target_uuid").
+		Values(follower).
+		PlaceholderFormat(squirrel.Dollar).
+		ToSql()
+
+		if err != nil {
+			return fmt.Errorf("failed to build insert query: %v", err)
+		}
+
+		_, err = r.connection.ExecContext(ctx, query, args...)
+		if err != nil {
+			return fmt.Errorf("failed to create user post in db: %v", err)
+		}
+	}
 	return nil
 }
