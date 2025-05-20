@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/s21platform/feed-service/internal/config"
-	"github.com/s21platform/user-service/pkg/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
+	
+	"github.com/s21platform/user-service/pkg/user"
+
+	"github.com/s21platform/feed-service/internal/config"
 )
 
 type Service struct {
