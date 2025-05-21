@@ -59,6 +59,7 @@ func (r *Repository) SaveNewEntity(ctx context.Context, UUID, metadata string) (
 	query, args, err := squirrel.Insert("entities").
 		Columns("external_uuid", "metadata").
 		Values(UUID, metadata).
+		Suffix("RETURNING uuid").
 		PlaceholderFormat(squirrel.Dollar).
 		ToSql()
 
@@ -67,7 +68,8 @@ func (r *Repository) SaveNewEntity(ctx context.Context, UUID, metadata string) (
 	}
 
 	var postUUID string
-	err = r.connection.QueryRowContext(ctx, query, args...).Scan(&postUUID)
+	err = r.connection.GetContext(ctx, &postUUID, query, args...)
+	
 	if err != nil {
 		return "", fmt.Errorf("failed to create user post in db: %v", err)
 	}

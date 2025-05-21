@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
-	
+
 	"github.com/s21platform/user-service/pkg/user"
 
 	"github.com/s21platform/feed-service/internal/config"
@@ -36,7 +36,7 @@ func (s *Service) GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*use
 
 	resp, err := s.client.GetWhoFollowPeer(ctx, &user.GetWhoFollowPeerIn{Uuid: userUUID})
 	if err != nil {
-		return nil, fmt.Errorf("failed to get user info from user-service: %v", err)
+		return nil, fmt.Errorf("failed to get user followers: %v", err)
 	}
 
 	return resp.Subscribers, nil
