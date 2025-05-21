@@ -50,8 +50,8 @@ type UserService struct {
 }
 
 type Logger struct {
-	Port string `env:"LOGGER_FEED_PORT"`
-	Host string `env:"LOGGER_FEED_HOST"`
+	Port string `env:"LOGGER_PORT"`
+	Host string `env:"LOGGER_HOST"`
 }
 
 func MustLoad() *Config {
