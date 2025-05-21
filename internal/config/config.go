@@ -13,6 +13,7 @@ type Config struct {
 	Metrics     Metrics
 	Platform    Platform
 	UserService UserService
+	Logger      Logger
 }
 
 type Service struct {
@@ -46,6 +47,11 @@ type Platform struct {
 type UserService struct {
 	Host string `env:"USER_SERVICE_HOST"`
 	Port string `env:"USER_SERVICE_PORT"`
+}
+
+type Logger struct {
+	Port string `env:"LOGGER_FEED_PORT"`
+	Host string `env:"LOGGER_FEED_HOST"`
 }
 
 func MustLoad() *Config {

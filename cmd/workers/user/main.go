@@ -5,6 +5,7 @@ import (
 	"log"
 
 	kafkalib "github.com/s21platform/kafka-lib"
+	logger_lib "github.com/s21platform/logger-lib"
 	"github.com/s21platform/metrics-lib/pkg"
 
 	client "github.com/s21platform/feed-service/internal/client/user"
@@ -17,6 +18,7 @@ const userPostConsumerGroupID = "new-post-creater"
 
 func main() {
 	cfg := config.MustLoad()
+	logger := logger_lib.New(cfg.Logger.Host, cfg.Logger.Port, cfg.Service.Name, cfg.Platform.Env)
 
 	dbRepo := postgres.New(cfg)
 	defer dbRepo.Close()
@@ -27,6 +29,7 @@ func main() {
 	}
 
 	ctx := context.WithValue(context.Background(), config.KeyMetrics, metrics)
+	ctx = context.WithValue(ctx, config.KeyLogger, logger)
 
 	userConsumerConfig := kafkalib.DefaultConsumerConfig(
 		cfg.Kafka.Host,
