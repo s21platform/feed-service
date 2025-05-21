@@ -7,11 +7,13 @@ import (
 )
 
 type Config struct {
-	Service  Service
-	Postgres Postgres
-	Kafka    Kafka
-	Metrics  Metrics
-	Platform Platform
+	Service     Service
+	Postgres    Postgres
+	Kafka       Kafka
+	Metrics     Metrics
+	Platform    Platform
+	UserService UserService
+	Logger      Logger
 }
 
 type Service struct {
@@ -40,6 +42,16 @@ type Metrics struct {
 
 type Platform struct {
 	Env string `env:"ENV"`
+}
+
+type UserService struct {
+	Host string `env:"USER_SERVICE_HOST"`
+	Port string `env:"USER_SERVICE_PORT"`
+}
+
+type Logger struct {
+	Port string `env:"LOGGER_PORT"`
+	Host string `env:"LOGGER_HOST"`
 }
 
 func MustLoad() *Config {
