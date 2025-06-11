@@ -32,7 +32,7 @@ type Postgres struct {
 type Kafka struct {
 	Host      string `env:"KAFKA_HOST"`
 	Port      string `env:"KAFKA_PORT"`
-	UserTopic string `env:"USER_CREATE_NEW_POST"`
+	UserTopic string `env:"USER_POST_CREATED"`
 }
 
 type Metrics struct {
