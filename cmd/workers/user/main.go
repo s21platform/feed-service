@@ -5,6 +5,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
+
 	kafkalib "github.com/s21platform/kafka-lib"
 	logger_lib "github.com/s21platform/logger-lib"
 	"github.com/s21platform/metrics-lib/pkg"
