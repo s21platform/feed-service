@@ -12,8 +12,9 @@ import (
 	"github.com/s21platform/user-service/pkg/user"
 
 	"github.com/s21platform/feed-service/internal/config"
-	"github.com/s21platform/feed-service/internal/model"
 )
+
+const User string = "user"
 
 type Handler struct {
 	dbR        DBRepo
@@ -49,7 +50,7 @@ func (h *Handler) Handler(ctx context.Context, in []byte) error {
 		return err
 	}
 
-	postUUID, err := h.dbR.SaveNewEntity(ctx, msg.PostId, model.User)
+	postUUID, err := h.dbR.SaveNewEntity(ctx, msg.PostId, User)
 	if err != nil {
 		m.Increment("save_user_post.error")
 		logger.Error(fmt.Sprintf("failed to create post: %v", err))
