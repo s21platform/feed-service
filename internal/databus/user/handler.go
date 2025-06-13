@@ -9,10 +9,12 @@ import (
 
 	logger_lib "github.com/s21platform/logger-lib"
 	"github.com/s21platform/metrics-lib/pkg"
+	"github.com/s21platform/user-service/pkg/user"
 
 	"github.com/s21platform/feed-service/internal/config"
-	"github.com/s21platform/feed-service/internal/model"
 )
+
+const User string = "user"
 
 type Handler struct {
 	dbR        DBRepo
@@ -39,7 +41,7 @@ func (h *Handler) Handler(ctx context.Context, in []byte) error {
 	logger.AddFuncName("Handler")
 
 	m := pkg.FromContext(ctx, config.KeyMetrics)
-	var msg model.NewEntityMessage
+	var msg user.UserPostCreated
 
 	err := convertMessage(in, &msg)
 	if err != nil {
@@ -48,14 +50,14 @@ func (h *Handler) Handler(ctx context.Context, in []byte) error {
 		return err
 	}
 
-	postUUID, err := h.dbR.SaveNewEntity(ctx, msg.EntityUUID, model.User)
+	postUUID, err := h.dbR.SaveNewEntity(ctx, msg.PostId, User)
 	if err != nil {
 		m.Increment("save_user_post.error")
 		logger.Error(fmt.Sprintf("failed to create post: %v", err))
 		return err
 	}
 
-	followers, err := h.userClient.GetWhoFollowPeer(ctx, msg.UserUUID)
+	followers, err := h.userClient.GetWhoFollowPeer(ctx, msg.UserUuid)
 	if err != nil {
 		m.Increment("save_user_post.error")
 		logger.Error(fmt.Sprintf("failed to get followers: %v", err))
