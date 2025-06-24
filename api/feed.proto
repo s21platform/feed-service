@@ -1,15 +1,33 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "pkg/feed";
 
 service FeedService {
-    rpc CreateUserPost(CreateUserPostIn) returns (CreateUserPostOut){};
+    rpc GetFeed(GetFeedIn) returns (GetFeedOut);
 }
 
-message CreateUserPostIn {
-    string content = 1;
+message GetFeedIn {
+    string uuid = 1;
 }
 
-message CreateUserPostOut {
-    string post_uuid = 1;
+message UserPost {
+    int64 post_uuid = 1;
+    string nickname = 2;
+    string full_name = 3;
+    string avatar_link = 4;
+    string content = 5;
+    google.protobuf.Timestamp created_at = 6;
+    bool is_edited = 7;
+}
+
+message Feed {
+    oneof posts_type {
+        UserPost user_post = 1;
+    }
+}
+
+message GetFeedOut {
+    repeated Feed posts = 1;
 }

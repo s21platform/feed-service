@@ -4,8 +4,10 @@
 ## Table of Contents
 
 - [api/feed.proto](#api_feed-proto)
-    - [CreateUserPostIn](#-CreateUserPostIn)
-    - [CreateUserPostOut](#-CreateUserPostOut)
+    - [Feed](#-Feed)
+    - [GetFeedIn](#-GetFeedIn)
+    - [GetFeedOut](#-GetFeedOut)
+    - [UserPost](#-UserPost)
   
     - [FeedService](#-FeedService)
   
@@ -20,30 +22,66 @@
 
 
 
-<a name="-CreateUserPostIn"></a>
+<a name="-Feed"></a>
 
-### CreateUserPostIn
+### Feed
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| user_post | [UserPost](#UserPost) |  |  |
+
+
+
+
+
+
+<a name="-GetFeedIn"></a>
+
+### GetFeedIn
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| uuid | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="-GetFeedOut"></a>
+
+### GetFeedOut
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| posts | [Feed](#Feed) | repeated |  |
+
+
+
+
+
+
+<a name="-UserPost"></a>
+
+### UserPost
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| post_uuid | [int64](#int64) |  |  |
+| nickname | [string](#string) |  |  |
+| full_name | [string](#string) |  |  |
+| avatar_link | [string](#string) |  |  |
 | content | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="-CreateUserPostOut"></a>
-
-### CreateUserPostOut
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| post_uuid | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| is_edited | [bool](#bool) |  |  |
 
 
 
@@ -63,7 +101,7 @@
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| CreateUserPost | [.CreateUserPostIn](#CreateUserPostIn) | [.CreateUserPostOut](#CreateUserPostOut) |  |
+| GetFeed | [.GetFeedIn](#GetFeedIn) | [.GetFeedOut](#GetFeedOut) |  |
 
  
 

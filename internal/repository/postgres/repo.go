@@ -3,6 +3,8 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"github.com/s21platform/feed-service/internal/model"
+	"github.com/s21platform/feed-service/pkg/feed"
 	"log"
 
 	"github.com/Masterminds/squirrel"
@@ -70,4 +72,50 @@ func (r *Repository) SaveNewEntitySuggestion(ctx context.Context, postUUID, foll
 		return fmt.Errorf("failed to create user post in db: %v", err)
 	}
 	return nil
+}
+
+func (r *Repository) FindTargetSuggestions(ctx context.Context, in *feed.GetFeedIn) ([]string, error) {
+	query, args, err := squirrel.Select("post_uuid").
+		From("entities_suggestion").
+		OrderBy("created_at DESC").
+		Where(squirrel.Eq{"target_uuid": in.Uuid}).
+		Limit(50).
+		PlaceholderFormat(squirrel.Dollar).
+		ToSql()
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to build select query: %v", err)
+	}
+
+	var postUUIDs []string
+	if err = r.connection.SelectContext(ctx, &postUUIDs, query, args...); err != nil {
+		return nil, fmt.Errorf("failed to fetch target suggestions: %v", err)
+	}
+
+	return postUUIDs, nil
+}
+
+func (r *Repository) FindEntityInfo(ctx context.Context, targetSuggestions []string) (map[string][]string, error) {
+	query, args, err := squirrel.
+		Select("external_uuid", "metadata").
+		From("entities").
+		Where(squirrel.Eq{"uuid": targetSuggestions}).
+		PlaceholderFormat(squirrel.Dollar).
+		ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build select query: %v", err)
+	}
+
+	var entityInfo []model.EntityInfo
+
+	err = r.connection.SelectContext(ctx, &entityInfo, query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch entity info: %v", err)
+	}
+
+	mapInfo := make(map[string][]string)
+	for _, value := range entityInfo {
+		mapInfo[value.Metadata] = append(mapInfo[value.Metadata], value.Uuid)
+	}
+	return mapInfo, nil
 }
