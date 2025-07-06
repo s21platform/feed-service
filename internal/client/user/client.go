@@ -1,4 +1,4 @@
-package client
+package user
 
 import (
 	"context"
@@ -9,13 +9,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/s21platform/user-service/pkg/user"
+	userproto "github.com/s21platform/user-service/pkg/user"
 
 	"github.com/s21platform/feed-service/internal/config"
 )
 
 type Service struct {
-	client user.UserServiceClient
+	client userproto.UserServiceClient
 }
 
 func NewService(cfg *config.Config) *Service {
@@ -26,15 +26,15 @@ func NewService(cfg *config.Config) *Service {
 		log.Fatalf("failed to connect to user-service: %v", err)
 	}
 
-	client := user.NewUserServiceClient(conn)
+	client := userproto.NewUserServiceClient(conn)
 
 	return &Service{client: client}
 }
 
-func (s *Service) GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*user.Peer, error) {
+func (s *Service) GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*userproto.Peer, error) {
 	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("uuid", userUUID))
 
-	resp, err := s.client.GetWhoFollowPeer(ctx, &user.GetWhoFollowPeerIn{Uuid: userUUID})
+	resp, err := s.client.GetWhoFollowPeer(ctx, &userproto.GetWhoFollowPeerIn{Uuid: userUUID})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user followers: %v", err)
 	}
