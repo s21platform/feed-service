@@ -6,6 +6,7 @@ import (
 	"net"
 
 	_ "github.com/lib/pq"
+	"github.com/s21platform/metrics-lib/pkg"
 	"google.golang.org/grpc"
 
 	"github.com/s21platform/feed-service/internal/config"
@@ -21,10 +22,16 @@ func main() {
 	dbRepo := db.New(cfg)
 	defer dbRepo.Close()
 
+	metrics, err := pkg.NewMetrics(cfg.Metrics.Host, cfg.Metrics.Port, "feed", cfg.Platform.Env)
+	if err != nil {
+		log.Fatalf("failed to create metrics object: %v", err)
+	}
+
 	feedService := service.New(dbRepo)
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			infra.AuthInterceptor,
+			infra.MetricsInterceptor(metrics),
 		),
 	)
 
