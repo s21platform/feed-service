@@ -10,3 +10,7 @@ type DBRepo interface {
 	FindTargetSuggestions(ctx context.Context, in *feed.GetFeedIn) ([]string, error)
 	FindEntityInfo(ctx context.Context, targetSuggestions []string) (map[string][]string, error)
 }
+
+type UserClient interface {
+	GetPostsByIds(ctx context.Context, uuids []string) error
+}

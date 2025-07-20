@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -40,4 +41,10 @@ func (s *Service) GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*use
 	}
 
 	return resp.Subscribers, nil
+}
+
+func (s *Service) GetPostsByIds(ctx context.Context, uuids []string) error {
+	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("uuids", strings.Join(uuids, ",")))
+
+	resp, err := s.client.GetPostsByIds
 }
