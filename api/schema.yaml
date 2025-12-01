@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Feed Service
+  version: 1.0.0
+
+paths:
+  /api/feed:
+    get:
+      summary: Ручка для получения ленты публикаций
+      operationId: GetFeed
+      parameters:
+        - name: X-User-Uuid
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFeedResponse'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+components:
+  schemas:
+    GetFeedResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedItem'
+    FeedItem:
+      type: object
+      properties:
+        user_post:
+          $ref: '#/components/schemas/UserPost'
+        society_post:
+          $ref: '#/components/schemas/SocietyPost'
+        material_post:
+          $ref: '#/components/schemas/MaterialPost'
+    UserPost:
+      type: object
+      required:
+        - post_uuid
+        - nickname
+        - content
+        - created_at
+      properties:
+        post_uuid:
+          type: string
+        nickname:
+          type: string
+        full_name:
+          type: string
+        avatar_link:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        is_edited:
+          type: boolean
+    SocietyPost:
+      type: object
+      required:
+        - post_uuid
+        - content
+        - created_at
+      properties:
+        post_uuid:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    MaterialPost:
+      type: object
+      required:
+        - post_uuid
+        - content
+        - created_at
+      properties:
+        post_uuid:
+          type: string
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalError:
+      description: Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+

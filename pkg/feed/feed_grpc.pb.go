@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	FeedService_CreateUserPost_FullMethodName = "/FeedService/CreateUserPost"
+	FeedService_GetFeed_FullMethodName        = "/FeedService/GetFeed"
 )
 
 // FeedServiceClient is the client API for FeedService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FeedServiceClient interface {
 	CreateUserPost(ctx context.Context, in *CreateUserPostIn, opts ...grpc.CallOption) (*CreateUserPostOut, error)
+	GetFeed(ctx context.Context, in *GetFeedIn, opts ...grpc.CallOption) (*GetFeedOut, error)
 }
 
 type feedServiceClient struct {
@@ -47,11 +49,22 @@ func (c *feedServiceClient) CreateUserPost(ctx context.Context, in *CreateUserPo
 	return out, nil
 }
 
+func (c *feedServiceClient) GetFeed(ctx context.Context, in *GetFeedIn, opts ...grpc.CallOption) (*GetFeedOut, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFeedOut)
+	err := c.cc.Invoke(ctx, FeedService_GetFeed_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FeedServiceServer is the server API for FeedService service.
 // All implementations must embed UnimplementedFeedServiceServer
 // for forward compatibility.
 type FeedServiceServer interface {
 	CreateUserPost(context.Context, *CreateUserPostIn) (*CreateUserPostOut, error)
+	GetFeed(context.Context, *GetFeedIn) (*GetFeedOut, error)
 	mustEmbedUnimplementedFeedServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedFeedServiceServer struct{}
 
 func (UnimplementedFeedServiceServer) CreateUserPost(context.Context, *CreateUserPostIn) (*CreateUserPostOut, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUserPost not implemented")
+}
+func (UnimplementedFeedServiceServer) GetFeed(context.Context, *GetFeedIn) (*GetFeedOut, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFeed not implemented")
 }
 func (UnimplementedFeedServiceServer) mustEmbedUnimplementedFeedServiceServer() {}
 func (UnimplementedFeedServiceServer) testEmbeddedByValue()                     {}
@@ -104,6 +120,24 @@ func _FeedService_CreateUserPost_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FeedService_GetFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFeedIn)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FeedServiceServer).GetFeed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FeedService_GetFeed_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FeedServiceServer).GetFeed(ctx, req.(*GetFeedIn))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FeedService_ServiceDesc is the grpc.ServiceDesc for FeedService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var FeedService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUserPost",
 			Handler:    _FeedService_CreateUserPost_Handler,
+		},
+		{
+			MethodName: "GetFeed",
+			Handler:    _FeedService_GetFeed_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

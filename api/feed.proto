@@ -1,9 +1,12 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "pkg/feed";
 
 service FeedService {
     rpc CreateUserPost(CreateUserPostIn) returns (CreateUserPostOut){};
+    rpc GetFeed(GetFeedIn) returns (GetFeedOut){};
 }
 
 message CreateUserPostIn {
@@ -12,4 +15,44 @@ message CreateUserPostIn {
 
 message CreateUserPostOut {
     string post_uuid = 1;
+}
+
+message GetFeedIn {
+    // Empty - user UUID will be taken from context metadata
+}
+
+message GetFeedOut {
+    repeated FeedItem items = 1;
+}
+
+message FeedItem {
+    oneof post {
+        UserPost user_post = 1;
+        SocietyPost society_post = 2;
+        MaterialPost material_post = 3;
+    }
+}
+
+message UserPost {
+    string post_uuid = 1;
+    string nickname = 2;
+    string full_name = 3;
+    string avatar_link = 4;
+    string content = 5;
+    google.protobuf.Timestamp created_at = 6;
+    bool is_edited = 7;
+}
+
+message SocietyPost {
+    // Placeholder for future society post structure
+    string post_uuid = 1;
+    string content = 2;
+    google.protobuf.Timestamp created_at = 3;
+}
+
+message MaterialPost {
+    // Placeholder for future material post structure
+    string post_uuid = 1;
+    string content = 2;
+    google.protobuf.Timestamp created_at = 3;
 }

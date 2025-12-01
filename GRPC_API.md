@@ -6,6 +6,12 @@
 - [api/feed.proto](#api_feed-proto)
     - [CreateUserPostIn](#-CreateUserPostIn)
     - [CreateUserPostOut](#-CreateUserPostOut)
+    - [FeedItem](#-FeedItem)
+    - [GetFeedIn](#-GetFeedIn)
+    - [GetFeedOut](#-GetFeedOut)
+    - [MaterialPost](#-MaterialPost)
+    - [SocietyPost](#-SocietyPost)
+    - [UserPost](#-UserPost)
   
     - [FeedService](#-FeedService)
   
@@ -49,6 +55,103 @@
 
 
 
+
+<a name="-FeedItem"></a>
+
+### FeedItem
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user_post | [UserPost](#UserPost) |  |  |
+| society_post | [SocietyPost](#SocietyPost) |  |  |
+| material_post | [MaterialPost](#MaterialPost) |  |  |
+
+
+
+
+
+
+<a name="-GetFeedIn"></a>
+
+### GetFeedIn
+Empty - user UUID will be taken from context metadata
+
+
+
+
+
+
+<a name="-GetFeedOut"></a>
+
+### GetFeedOut
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [FeedItem](#FeedItem) | repeated |  |
+
+
+
+
+
+
+<a name="-MaterialPost"></a>
+
+### MaterialPost
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| post_uuid | [string](#string) |  | Placeholder for future material post structure |
+| content | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="-SocietyPost"></a>
+
+### SocietyPost
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| post_uuid | [string](#string) |  | Placeholder for future society post structure |
+| content | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="-UserPost"></a>
+
+### UserPost
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| post_uuid | [string](#string) |  |  |
+| nickname | [string](#string) |  |  |
+| full_name | [string](#string) |  |  |
+| avatar_link | [string](#string) |  |  |
+| content | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| is_edited | [bool](#bool) |  |  |
+
+
+
+
+
  
 
  
@@ -64,6 +167,7 @@
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | CreateUserPost | [.CreateUserPostIn](#CreateUserPostIn) | [.CreateUserPostOut](#CreateUserPostOut) |  |
+| GetFeed | [.GetFeedIn](#GetFeedIn) | [.GetFeedOut](#GetFeedOut) |  |
 
  
 

@@ -41,3 +41,25 @@ func (s *Service) GetWhoFollowPeer(ctx context.Context, userUUID string) ([]*use
 
 	return resp.Subscribers, nil
 }
+
+func (s *Service) GetPeerFollow(ctx context.Context, userUUID string) ([]*userproto.Peer, error) {
+	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("uuid", userUUID))
+
+	resp, err := s.client.GetPeerFollow(ctx, &userproto.GetPeerFollowIn{Uuid: userUUID})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user subscriptions: %v", err)
+	}
+
+	return resp.Subscription, nil
+}
+
+func (s *Service) GetPostsByIds(ctx context.Context, userUUID string, postUUIDs []string) ([]*userproto.PostInfo, error) {
+	ctx = metadata.NewOutgoingContext(ctx, metadata.Pairs("uuid", userUUID))
+
+	resp, err := s.client.GetPostsByIds(ctx, &userproto.GetPostsByIdsIn{PostUuids: postUUIDs})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get posts by ids: %v", err)
+	}
+
+	return resp.Posts, nil
+}

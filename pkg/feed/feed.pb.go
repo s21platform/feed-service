@@ -9,6 +9,7 @@ package feed
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -109,17 +110,440 @@ func (x *CreateUserPostOut) GetPostUuid() string {
 	return ""
 }
 
+type GetFeedIn struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFeedIn) Reset() {
+	*x = GetFeedIn{}
+	mi := &file_api_feed_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFeedIn) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFeedIn) ProtoMessage() {}
+
+func (x *GetFeedIn) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFeedIn.ProtoReflect.Descriptor instead.
+func (*GetFeedIn) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{2}
+}
+
+type GetFeedOut struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*FeedItem            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFeedOut) Reset() {
+	*x = GetFeedOut{}
+	mi := &file_api_feed_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFeedOut) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFeedOut) ProtoMessage() {}
+
+func (x *GetFeedOut) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFeedOut.ProtoReflect.Descriptor instead.
+func (*GetFeedOut) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetFeedOut) GetItems() []*FeedItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type FeedItem struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Post:
+	//
+	//	*FeedItem_UserPost
+	//	*FeedItem_SocietyPost
+	//	*FeedItem_MaterialPost
+	Post          isFeedItem_Post `protobuf_oneof:"post"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FeedItem) Reset() {
+	*x = FeedItem{}
+	mi := &file_api_feed_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FeedItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FeedItem) ProtoMessage() {}
+
+func (x *FeedItem) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FeedItem.ProtoReflect.Descriptor instead.
+func (*FeedItem) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FeedItem) GetPost() isFeedItem_Post {
+	if x != nil {
+		return x.Post
+	}
+	return nil
+}
+
+func (x *FeedItem) GetUserPost() *UserPost {
+	if x != nil {
+		if x, ok := x.Post.(*FeedItem_UserPost); ok {
+			return x.UserPost
+		}
+	}
+	return nil
+}
+
+func (x *FeedItem) GetSocietyPost() *SocietyPost {
+	if x != nil {
+		if x, ok := x.Post.(*FeedItem_SocietyPost); ok {
+			return x.SocietyPost
+		}
+	}
+	return nil
+}
+
+func (x *FeedItem) GetMaterialPost() *MaterialPost {
+	if x != nil {
+		if x, ok := x.Post.(*FeedItem_MaterialPost); ok {
+			return x.MaterialPost
+		}
+	}
+	return nil
+}
+
+type isFeedItem_Post interface {
+	isFeedItem_Post()
+}
+
+type FeedItem_UserPost struct {
+	UserPost *UserPost `protobuf:"bytes,1,opt,name=user_post,json=userPost,proto3,oneof"`
+}
+
+type FeedItem_SocietyPost struct {
+	SocietyPost *SocietyPost `protobuf:"bytes,2,opt,name=society_post,json=societyPost,proto3,oneof"`
+}
+
+type FeedItem_MaterialPost struct {
+	MaterialPost *MaterialPost `protobuf:"bytes,3,opt,name=material_post,json=materialPost,proto3,oneof"`
+}
+
+func (*FeedItem_UserPost) isFeedItem_Post() {}
+
+func (*FeedItem_SocietyPost) isFeedItem_Post() {}
+
+func (*FeedItem_MaterialPost) isFeedItem_Post() {}
+
+type UserPost struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PostUuid      string                 `protobuf:"bytes,1,opt,name=post_uuid,json=postUuid,proto3" json:"post_uuid,omitempty"`
+	Nickname      string                 `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	FullName      string                 `protobuf:"bytes,3,opt,name=full_name,json=fullName,proto3" json:"full_name,omitempty"`
+	AvatarLink    string                 `protobuf:"bytes,4,opt,name=avatar_link,json=avatarLink,proto3" json:"avatar_link,omitempty"`
+	Content       string                 `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	IsEdited      bool                   `protobuf:"varint,7,opt,name=is_edited,json=isEdited,proto3" json:"is_edited,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserPost) Reset() {
+	*x = UserPost{}
+	mi := &file_api_feed_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserPost) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserPost) ProtoMessage() {}
+
+func (x *UserPost) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserPost.ProtoReflect.Descriptor instead.
+func (*UserPost) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UserPost) GetPostUuid() string {
+	if x != nil {
+		return x.PostUuid
+	}
+	return ""
+}
+
+func (x *UserPost) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+func (x *UserPost) GetFullName() string {
+	if x != nil {
+		return x.FullName
+	}
+	return ""
+}
+
+func (x *UserPost) GetAvatarLink() string {
+	if x != nil {
+		return x.AvatarLink
+	}
+	return ""
+}
+
+func (x *UserPost) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *UserPost) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *UserPost) GetIsEdited() bool {
+	if x != nil {
+		return x.IsEdited
+	}
+	return false
+}
+
+type SocietyPost struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Placeholder for future society post structure
+	PostUuid      string                 `protobuf:"bytes,1,opt,name=post_uuid,json=postUuid,proto3" json:"post_uuid,omitempty"`
+	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SocietyPost) Reset() {
+	*x = SocietyPost{}
+	mi := &file_api_feed_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SocietyPost) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SocietyPost) ProtoMessage() {}
+
+func (x *SocietyPost) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SocietyPost.ProtoReflect.Descriptor instead.
+func (*SocietyPost) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SocietyPost) GetPostUuid() string {
+	if x != nil {
+		return x.PostUuid
+	}
+	return ""
+}
+
+func (x *SocietyPost) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *SocietyPost) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+type MaterialPost struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Placeholder for future material post structure
+	PostUuid      string                 `protobuf:"bytes,1,opt,name=post_uuid,json=postUuid,proto3" json:"post_uuid,omitempty"`
+	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MaterialPost) Reset() {
+	*x = MaterialPost{}
+	mi := &file_api_feed_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MaterialPost) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MaterialPost) ProtoMessage() {}
+
+func (x *MaterialPost) ProtoReflect() protoreflect.Message {
+	mi := &file_api_feed_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MaterialPost.ProtoReflect.Descriptor instead.
+func (*MaterialPost) Descriptor() ([]byte, []int) {
+	return file_api_feed_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *MaterialPost) GetPostUuid() string {
+	if x != nil {
+		return x.PostUuid
+	}
+	return ""
+}
+
+func (x *MaterialPost) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *MaterialPost) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 var File_api_feed_proto protoreflect.FileDescriptor
 
 const file_api_feed_proto_rawDesc = "" +
 	"\n" +
-	"\x0eapi/feed.proto\",\n" +
+	"\x0eapi/feed.proto\x1a\x1fgoogle/protobuf/timestamp.proto\",\n" +
 	"\x10CreateUserPostIn\x12\x18\n" +
 	"\acontent\x18\x01 \x01(\tR\acontent\"0\n" +
 	"\x11CreateUserPostOut\x12\x1b\n" +
-	"\tpost_uuid\x18\x01 \x01(\tR\bpostUuid2H\n" +
+	"\tpost_uuid\x18\x01 \x01(\tR\bpostUuid\"\v\n" +
+	"\tGetFeedIn\"-\n" +
+	"\n" +
+	"GetFeedOut\x12\x1f\n" +
+	"\x05items\x18\x01 \x03(\v2\t.FeedItemR\x05items\"\xa5\x01\n" +
+	"\bFeedItem\x12(\n" +
+	"\tuser_post\x18\x01 \x01(\v2\t.UserPostH\x00R\buserPost\x121\n" +
+	"\fsociety_post\x18\x02 \x01(\v2\f.SocietyPostH\x00R\vsocietyPost\x124\n" +
+	"\rmaterial_post\x18\x03 \x01(\v2\r.MaterialPostH\x00R\fmaterialPostB\x06\n" +
+	"\x04post\"\xf3\x01\n" +
+	"\bUserPost\x12\x1b\n" +
+	"\tpost_uuid\x18\x01 \x01(\tR\bpostUuid\x12\x1a\n" +
+	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x1b\n" +
+	"\tfull_name\x18\x03 \x01(\tR\bfullName\x12\x1f\n" +
+	"\vavatar_link\x18\x04 \x01(\tR\n" +
+	"avatarLink\x12\x18\n" +
+	"\acontent\x18\x05 \x01(\tR\acontent\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1b\n" +
+	"\tis_edited\x18\a \x01(\bR\bisEdited\"\x7f\n" +
+	"\vSocietyPost\x12\x1b\n" +
+	"\tpost_uuid\x18\x01 \x01(\tR\bpostUuid\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x129\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x80\x01\n" +
+	"\fMaterialPost\x12\x1b\n" +
+	"\tpost_uuid\x18\x01 \x01(\tR\bpostUuid\x12\x18\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x129\n" +
+	"\n" +
+	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt2n\n" +
 	"\vFeedService\x129\n" +
-	"\x0eCreateUserPost\x12\x11.CreateUserPostIn\x1a\x12.CreateUserPostOut\"\x00B\n" +
+	"\x0eCreateUserPost\x12\x11.CreateUserPostIn\x1a\x12.CreateUserPostOut\"\x00\x12$\n" +
+	"\aGetFeed\x12\n" +
+	".GetFeedIn\x1a\v.GetFeedOut\"\x00B\n" +
 	"Z\bpkg/feedb\x06proto3"
 
 var (
@@ -134,19 +558,35 @@ func file_api_feed_proto_rawDescGZIP() []byte {
 	return file_api_feed_proto_rawDescData
 }
 
-var file_api_feed_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_feed_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_api_feed_proto_goTypes = []any{
-	(*CreateUserPostIn)(nil),  // 0: CreateUserPostIn
-	(*CreateUserPostOut)(nil), // 1: CreateUserPostOut
+	(*CreateUserPostIn)(nil),      // 0: CreateUserPostIn
+	(*CreateUserPostOut)(nil),     // 1: CreateUserPostOut
+	(*GetFeedIn)(nil),             // 2: GetFeedIn
+	(*GetFeedOut)(nil),            // 3: GetFeedOut
+	(*FeedItem)(nil),              // 4: FeedItem
+	(*UserPost)(nil),              // 5: UserPost
+	(*SocietyPost)(nil),           // 6: SocietyPost
+	(*MaterialPost)(nil),          // 7: MaterialPost
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_api_feed_proto_depIdxs = []int32{
-	0, // 0: FeedService.CreateUserPost:input_type -> CreateUserPostIn
-	1, // 1: FeedService.CreateUserPost:output_type -> CreateUserPostOut
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: GetFeedOut.items:type_name -> FeedItem
+	5, // 1: FeedItem.user_post:type_name -> UserPost
+	6, // 2: FeedItem.society_post:type_name -> SocietyPost
+	7, // 3: FeedItem.material_post:type_name -> MaterialPost
+	8, // 4: UserPost.created_at:type_name -> google.protobuf.Timestamp
+	8, // 5: SocietyPost.created_at:type_name -> google.protobuf.Timestamp
+	8, // 6: MaterialPost.created_at:type_name -> google.protobuf.Timestamp
+	0, // 7: FeedService.CreateUserPost:input_type -> CreateUserPostIn
+	2, // 8: FeedService.GetFeed:input_type -> GetFeedIn
+	1, // 9: FeedService.CreateUserPost:output_type -> CreateUserPostOut
+	3, // 10: FeedService.GetFeed:output_type -> GetFeedOut
+	9, // [9:11] is the sub-list for method output_type
+	7, // [7:9] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_api_feed_proto_init() }
@@ -154,13 +594,18 @@ func file_api_feed_proto_init() {
 	if File_api_feed_proto != nil {
 		return
 	}
+	file_api_feed_proto_msgTypes[4].OneofWrappers = []any{
+		(*FeedItem_UserPost)(nil),
+		(*FeedItem_SocietyPost)(nil),
+		(*FeedItem_MaterialPost)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_feed_proto_rawDesc), len(file_api_feed_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
